@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,10 +30,10 @@ import java.util.Set;
  */
 
 public class CompetitionDijkstra {
-	private EdgeWeightedDigraph G;
+	public EdgeWeightedDigraph G;
 	private int slowest;
 	private double maxDist;
-	private static int timeRequired = -1;
+	private boolean isValidGraph = false;
 
 
 	/**
@@ -40,26 +41,47 @@ public class CompetitionDijkstra {
 	 * @param sA, sB, sC: speeds for 3 contestants
 	 * @throws Exception 
 	 */
-	CompetitionDijkstra (String fileName, int sA, int sB, int sC) throws Exception
+	CompetitionDijkstra (String fileName, int sA, int sB, int sC)
 	{
-		this.slowest = Math.min(Math.min(sA,sB),sC);
-		this.maxDist = 0.0;
-
-		// Initialize the graph
-		this.G = new EdgeWeightedDigraph(fileName);
-		if(G.isValidGraph)
+		int totalSpeed = sA + sB + sC;
+		if(300 >= totalSpeed && totalSpeed >= 150)
 		{
-			for(int i = 0; i < G.V(); i++){ 
-				DijkstraSP routedGraph = new DijkstraSP(G, i);
-				for(int j = 0; j < G.V(); j++){
-					if(routedGraph.hasPathTo(j)){
-						if(this.maxDist < routedGraph.distTo(j))
-							this.maxDist = routedGraph.distTo(j);
+			this.slowest = Math.min(Math.min(sA,sB),sC); 
+			this.maxDist = 0.0;
+
+			// Initialize the graph
+
+			try
+			{
+				File file = new File(fileName);
+				Scanner input = new Scanner(file);
+				this.G = new EdgeWeightedDigraph(input);
+			}
+			catch(FileNotFoundException | NullPointerException e1)
+			{
+				this.G = null;
+			    this.isValidGraph = false;
+			}
+			
+
+			if(G != null && G.isValidGraph)
+			{
+				this.isValidGraph = true;
+				
+				for(int i = 0; i < G.V(); i++){ 
+					DijkstraSP routedGraph = new DijkstraSP(G, i);
+					for(int j = 0; j < G.V(); j++){
+						if(routedGraph.hasPathTo(j)){
+							if(this.maxDist < routedGraph.distTo(j))
+								this.maxDist = routedGraph.distTo(j);
+						} 
 					}
 				}
 			}
-			timeRequired = timeRequiredforCompetition();
-		}
+		} 
+
+
+
 	}
 
 	/**
@@ -68,14 +90,15 @@ public class CompetitionDijkstra {
 	 */
 	public int timeRequiredforCompetition()
 	{
-		if(G.isValidGraph)
-		{
-		double time = (1000*this.maxDist)/this.slowest;
-
-		return (int) Math.ceil(time);
-		}
-		else
+		if(!isValidGraph||this.G == null || this.maxDist == 0.0 || this.slowest == 0)
 			return -1;
+		else
+		{
+			double time = (1000*this.maxDist)/this.slowest;
+
+			return (int) Math.ceil(time);
+		}
+			
 	}
 
 

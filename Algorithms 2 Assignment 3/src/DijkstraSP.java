@@ -15,11 +15,8 @@ public class DijkstraSP {
      * @throws IllegalArgumentException if an edge weight is negative
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
-    public DijkstraSP(EdgeWeightedDigraph G, int s) throws Exception {
-        for (WeightedDirectedEdge e : G.edges()) {
-            
-        }
-
+    public DijkstraSP(EdgeWeightedDigraph G, int s){
+        
         distTo = new double[G.V()];
         edgeTo = new WeightedDirectedEdge[G.V()];
 
@@ -31,10 +28,10 @@ public class DijkstraSP {
 
         // relax vertices in order of distance from s
         pq = new IndexMinPQ<Double>(G.V());
-        pq.insert(s, distTo[s]);
+        pq.insert(s, distTo[s]); 
         while (!pq.isEmpty()) {
             int v = pq.delMin();
-            for (WeightedDirectedEdge e : G.adj(v))
+            for (WeightedDirectedEdge e : G.adj(v))  
                 relax(e);
         }
 
@@ -79,7 +76,11 @@ public class DijkstraSP {
 
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
     private void validateVertex(int v) {
-        int V = distTo.length;
+    	int V = distTo.length;
+    	if(v < 0 || v >= V)
+    		throw new IllegalArgumentException("Invalid Vertex");
+
+    	
         
     }
 

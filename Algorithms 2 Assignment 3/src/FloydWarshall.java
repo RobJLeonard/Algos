@@ -57,8 +57,6 @@ public class FloydWarshall{
 	}
 
 	public double dist(int f, int t){
-		if(hasNegativeCycle())
-			throw new UnsupportedOperationException("Negative cost cycle exists");
 		return distTo[f][t];
 	}
 

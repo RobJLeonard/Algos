@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -13,42 +14,36 @@ public class EWDAdjMatrix {
 	private WeightedDirectedEdge[][] edgeFromTo;
 	private boolean isValid;
 
-	public EWDAdjMatrix(String fileName) throws FileNotFoundException 
+	public EWDAdjMatrix(Scanner scanner)
 	{
 
-		try
+		this.V = scanner.nextInt();
+		this.E = scanner.nextInt();
+		this.isValid = true;
+
+		if(V>0)
 		{
-			File file = new File(fileName);  
-			Scanner scanner = new Scanner(file);
-			this.V = scanner.nextInt();
-			this.E = scanner.nextInt();
-			this.isValid = true;
 
-			if(V>0)
-			{
+			int edges = this.E;
+			this.edgeFromTo = new WeightedDirectedEdge[this.V][this.V];
 
-				int edges = this.E;
-				this.edgeFromTo = new WeightedDirectedEdge[this.V][this.V];
+			for(int i=0; i < edges; i++){
+				int v = scanner.nextInt();
+				int w = scanner.nextInt();
+				double weight = scanner.nextDouble();
 
-				for(int i=0; i < edges; i++){
-					int v = scanner.nextInt();
-					int w = scanner.nextInt();
-					double weight = scanner.nextDouble();
-
-					if(v >= 0 && w >=0){
-						if(v == w)
-							addEdge(new WeightedDirectedEdge(v, w, Math.abs(weight)));
-						else
-							addEdge(new WeightedDirectedEdge(v, w, weight));
-					}
+				if(v >= 0 && w >=0){
+					if(v == w)
+						addEdge(new WeightedDirectedEdge(v, w, Math.abs(weight)));
 					else
-						this.isValid = false;
+						addEdge(new WeightedDirectedEdge(v, w, weight));
 				}
+				else
+					this.isValid = false;
 			}
 		}
-		catch (FileNotFoundException e){
-			System.out.println("FileNotFoundException");
-		}
+
+
 	}
 
 	public boolean isValid(){
@@ -57,6 +52,10 @@ public class EWDAdjMatrix {
 
 	public int V(){
 		return V;
+	}
+	
+	public int E(){
+		return E;
 	}
 
 

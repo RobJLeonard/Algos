@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Scanner;
 /* * A Contest to Meet (ACM) is a reality TV contest that sets three contestants at three random
  * city intersections. In order to win, the three contestants need all to meet at any intersection
  * of the city as fast as possible.
@@ -17,40 +19,57 @@ import java.io.FileNotFoundException;
  */
 
 public class CompetitionFloydWarshall {
-	private EWDAdjMatrix G;
+	public EWDAdjMatrix G;
 	private int slowest;
 	private double maxDistance;
-	private boolean isValidGraph;
-	private static int timeRequired = -1;
+	private boolean isValidGraph = false;
+	private FloydWarshall shortestPaths;
 
 	/**
 	 * @param filename: A filename containing the details of the city road network
 	 * @param sA, sB, sC: speeds for 3 contestants
+	 * @throws Exception 
 	 */
-	CompetitionFloydWarshall (String fileName, int sA, int sB, int sC) throws FileNotFoundException{
+	CompetitionFloydWarshall (String fileName, int sA, int sB, int sC)
+	{
 
-		this.G = new EWDAdjMatrix(fileName);
-		FloydWarshall shortestPath = new FloydWarshall(this.G);
-
-		this.maxDistance = 0.0;
-		this.slowest = Math.min(Math.min(sA,sB),sC);
-		int vertices = this.G.V();
-
-		if(this.G.isValid()){
-			this.isValidGraph = true;
-			for(int v = 0; v < vertices; v++){
-				for(int w = 0; w < vertices; w++){
-					if(shortestPath.hasPath(v,w)){
-						if(this.maxDistance < shortestPath.dist(v,w))
-							this.maxDistance = shortestPath.dist(v,w);
+		int totalSpeed = sA + sB + sC;
+		if(300 >= totalSpeed && totalSpeed >= 150)
+		{
+			try
+			{
+				File file = new File(fileName);
+				Scanner input = new Scanner(file);
+				this.G = new EWDAdjMatrix(input);
+				isValidGraph = G.isValid();
+				this.shortestPaths = new FloydWarshall(this.G); 
+				this.maxDistance = 0.0;
+				this.slowest = Math.min(Math.min(sA,sB),sC);
+			}
+			catch( FileNotFoundException | NullPointerException | OutOfMemoryError e)
+			{
+				this.G= null;
+				this.isValidGraph = false;
+			}
+				
+				
+				
+				if(this.shortestPaths != null && this.G.isValid())
+				{
+					int vertices = this.G.V();
+					
+					for(int v = 0; v < vertices; v++){
+						for(int w = 0; w < vertices; w++){
+							if(shortestPaths.hasPath(v,w)){
+								if(this.maxDistance < shortestPaths.dist(v,w))
+									this.maxDistance = shortestPaths.dist(v,w);
+							}
+						}
 					}
 				}
-			}
 		}
-		else
-			this.isValidGraph = false;
+				
 
-		this.timeRequired = timeRequiredforCompetition();
 	}
 
 

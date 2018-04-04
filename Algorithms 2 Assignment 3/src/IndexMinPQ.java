@@ -34,7 +34,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
      * @return {@code true} if this priority queue is empty;
      *         {@code false} otherwise
      */
-    public boolean isEmpty() {
+    public boolean isEmpty() { 
         return n == 0;
     }
 
