@@ -21,7 +21,7 @@ public class EWDAdjMatrix {
 		this.E = scanner.nextInt();
 		this.isValid = true;
 
-		if(V>0)
+		if(V>=3)
 		{
 
 			int edges = this.E;
@@ -54,9 +54,6 @@ public class EWDAdjMatrix {
 		return V;
 	}
 	
-	public int E(){
-		return E;
-	}
 
 
 	public void addEdge(WeightedDirectedEdge e){
@@ -94,12 +91,9 @@ public class EWDAdjMatrix {
 		}
 
 		public void remove(){
-			System.out.println("UnsupportedOperationException");
 		}
 
 		public WeightedDirectedEdge next(){
-			if(!hasNext())
-				System.out.println("No such element");
 			return edgeFromTo[v][w++];
 		}
 	}

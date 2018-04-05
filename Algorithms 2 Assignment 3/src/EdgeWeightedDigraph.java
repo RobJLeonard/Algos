@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class EdgeWeightedDigraph 
 {
 	private int V;                // number of vertices in this digraph
-	private int E;                      // number of edges in this digraph
+	private int E = 0;                      // number of edges in this digraph
 	private ArrayList<WeightedDirectedEdge>[] adj;    // adj[v] = adjacency list for vertex v
 	private int[] indegree;             // indegree[v] = indegree of vertex v
 	public boolean isValidGraph;
@@ -15,10 +15,10 @@ public class EdgeWeightedDigraph
 
 
 		this.V = input.nextInt();
-		this.E = input.nextInt();
+		int edges = input.nextInt();
 		this.isValidGraph = true;
 
-		if(this.V<0)
+		if(this.V<3)
 			this.isValidGraph = false;
 
 		if(this.isValidGraph)
@@ -35,7 +35,7 @@ public class EdgeWeightedDigraph
 				System.out.println("Edges cannot be negative"); 
 
 
-			int edges = this.E;
+			
 
 			for (int i = 0; i < edges; i++) 
 			{
@@ -52,38 +52,11 @@ public class EdgeWeightedDigraph
 				}
 
 			}
-			validateGraph();
 		}
 
 		input.close();
 
 	}
-
-	public void validateGraph(){
-
-		if(!this.isValidGraph)
-			return;
-
-		boolean graphValid = true;
-
-		for(int v=0; v<this.V; v++){
-			if(indegree[v] < 0){
-				graphValid = false;
-				break;
-			}
-		}
-		this.isValidGraph = graphValid;
-
-	}
-
-	public boolean isValid() {
-		if(this.isValidGraph)
-			return true;
-		else
-			return false;
-	}
-
-
 
 
 	/**
@@ -93,17 +66,6 @@ public class EdgeWeightedDigraph
 	 */
 	public int V(){return V;}
 	
-	public int E(){return E;}
-
-
-	private boolean validate(int v){
-		if(v < 0 || v >= this.V)
-		{
-			System.out.println("Vertex: " + v + " is not between 0 and " + (this.V -1));
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	 * Adds a weighted edge to the Digraph
@@ -130,23 +92,7 @@ public class EdgeWeightedDigraph
 		return adj[v];
 	}
 
-	/**
-	 * Returns all directed edges in this edge-weighted digraph.
-	 * To iterate over the edges in this edge-weighted digraph, use foreach notation:
-	 * {@code for (DirectedEdge e : G.edges())}.
-	 *
-	 * @return all edges in this edge-weighted digraph, as an iterable
-	 */
-	public Iterable<WeightedDirectedEdge> edges()
-	{
-		ArrayList<WeightedDirectedEdge> list = new ArrayList<WeightedDirectedEdge>();
-		for (int v = 0; v < V; v++) {
-			for (WeightedDirectedEdge e : adj(v)) {
-				list.add(e);
-			}
-		}
-		return list;
-	} 
+	
 
 
 

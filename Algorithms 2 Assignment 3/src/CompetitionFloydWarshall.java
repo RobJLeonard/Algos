@@ -27,14 +27,14 @@ public class CompetitionFloydWarshall {
 
 	/**
 	 * @param filename: A filename containing the details of the city road network
-	 * @param sA, sB, sC: speeds for 3 contestants
+	 * @param sA, sB, sC: speeds for 3 contestants 
 	 * @throws Exception 
 	 */
 	CompetitionFloydWarshall (String fileName, int sA, int sB, int sC)
 	{
 
 		int totalSpeed = sA + sB + sC;
-		if(300 >= totalSpeed && totalSpeed >= 150)
+		if(0 <= totalSpeed )
 		{
 			try
 			{
@@ -64,7 +64,10 @@ public class CompetitionFloydWarshall {
 								if(this.maxDistance < shortestPaths.dist(v,w))
 									this.maxDistance = shortestPaths.dist(v,w);
 							}
+							else
+								this.isValidGraph = false;
 						}
+						
 					}
 				}
 		}
@@ -77,7 +80,7 @@ public class CompetitionFloydWarshall {
 	 * @return int: minimum minutes that will pass before the three contestants can meet
 	 */
 	public int timeRequiredforCompetition(){
-		if(this.maxDistance > 0.0 && this.slowest > 0){
+		if(this.G != null && this.isValidGraph && this.maxDistance > 0.0 && this.slowest > 0){
 			return (int) Math.ceil((1000*this.maxDistance)/this.slowest);
 		}
 		return -1;

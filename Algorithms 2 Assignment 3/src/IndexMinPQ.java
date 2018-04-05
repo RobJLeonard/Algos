@@ -62,11 +62,11 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
      *         with index {@code i}
      */
     public void insert(int i, Key key) {
-        if (i < 0 || i >= maxN) throw new IllegalArgumentException();
-        if (contains(i)) throw new IllegalArgumentException("index is already in the priority queue");
+       // if (i < 0 || i >= maxN) throw new IllegalArgumentException();
+       // if (contains(i)) throw new IllegalArgumentException("index is already in the priority queue");
         n++;
         qp[i] = n;
-        pq[n] = i;
+        pq[n] = i; 
         keys[i] = key;
         swim(n);
     }
@@ -79,7 +79,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
      * @throws NoSuchElementException if this priority queue is empty
      */
     public int delMin() {
-        if (n == 0) throw new NoSuchElementException("Priority queue underflow");
+//        if (n == 0) throw new NoSuchElementException("Priority queue underflow");
         int min = pq[1];
         exch(1, n--);
         sink(1);
@@ -102,10 +102,10 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
      * @throws NoSuchElementException no key is associated with index {@code i}
      */
     public void decreaseKey(int i, Key key) {
-        if (i < 0 || i >= maxN) throw new IllegalArgumentException();
-        if (!contains(i)) throw new NoSuchElementException("index is not in the priority queue");
-        if (keys[i].compareTo(key) <= 0)
-            throw new IllegalArgumentException("Calling decreaseKey() with given argument would not strictly decrease the key");
+//        if (i < 0 || i >= maxN) throw new IllegalArgumentException();
+//        if (!contains(i)) throw new NoSuchElementException("index is not in the priority queue");
+//        if (keys[i].compareTo(key) <= 0)
+//            throw new IllegalArgumentException("Calling decreaseKey() with given argument would not strictly decrease the key");
         keys[i] = key;
         swim(qp[i]);
     }

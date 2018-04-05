@@ -44,10 +44,10 @@ public class CompetitionDijkstra {
 	CompetitionDijkstra (String fileName, int sA, int sB, int sC)
 	{
 		int totalSpeed = sA + sB + sC;
-		if(300 >= totalSpeed && totalSpeed >= 150)
+		if(0 <= totalSpeed)
 		{
 			this.slowest = Math.min(Math.min(sA,sB),sC); 
-			this.maxDist = 0.0;
+			this.maxDist = 0.0; 
 
 			// Initialize the graph
 
@@ -74,7 +74,9 @@ public class CompetitionDijkstra {
 						if(routedGraph.hasPathTo(j)){
 							if(this.maxDist < routedGraph.distTo(j))
 								this.maxDist = routedGraph.distTo(j);
-						} 
+						}
+						else
+							this.isValidGraph = false;
 					}
 				}
 			}
